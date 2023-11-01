@@ -1,1 +1,1 @@
-# ChatApplication
+CS3800 Chat Application

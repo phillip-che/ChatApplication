@@ -1,9 +1,9 @@
 "use client";
 
-import styles from './page.module.css'
 import io from "socket.io-client"
 import { useEffect, useState } from "react"
 import { Socket } from "socket.io-client"
+import UsernameInput from '@/components/UsernameInput';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
 
@@ -26,6 +26,7 @@ const useSocket = () => {
 
 export default function Home() {
 
+  const [user, setUser] = useState(null);
   const socket = useSocket();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function Home() {
 
   return (
     <main>
-      <h1>HOME PAGE</h1>
+      <UsernameInput />
       {socket ? 
       <div>
         Socket ID: {socket.id}

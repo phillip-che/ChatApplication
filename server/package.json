@@ -23,5 +23,6 @@
     "pino": "^8.16.1",
     "pino-pretty": "^10.2.3",
     "socket.io": "^4.7.2"
-  }
+  },
+  "packageManager": "yarn@4.0.1"
 }

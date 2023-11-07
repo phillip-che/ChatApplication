@@ -16,6 +16,14 @@ const io = new Server(httpServer, {
     }
 });
 
+const EVENTS = {
+    CONNECTION: "connection",
+    DISCONNECT: "disconnect",
+    SEND_MESSAGE: "send_message",
+    JOIN_ROOM: "join_room",
+    LEAVE_ROOM: "leave_room"
+};
+
 app.get('/', (_, res) => {
     res.send(`Server is up and running.`);
 });
@@ -23,11 +31,24 @@ app.get('/', (_, res) => {
 httpServer.listen(port, () => {
     console.log(`Listening on port ${port}`);
 
-    io.on("connection", (socket: Socket) => {
+    io.on(EVENTS.CONNECTION, (socket: Socket) => {
         console.log(`User ${socket.id} connected.`);
 
-        socket.on("disconnect", () => {
-            console.log(`User ${socket.id} disconncted.`);
+        socket.on(EVENTS.DISCONNECT, () => {
+            console.log(`User ${socket.id} disconnected.`);
         });
+
+        socket.on(EVENTS.SEND_MESSAGE, (message) => {
+            console.log(message);
+        });
+
+        socket.on(EVENTS.JOIN_ROOM, (room) => {
+            console.log(`User ${socket.id} joined room ${room.id}`);
+        });
+
+        socket.on(EVENTS.LEAVE_ROOM, (room) => {
+            console.log(`User ${socket.id} left room ${room.id}`);
+        });
+        
     });
 });

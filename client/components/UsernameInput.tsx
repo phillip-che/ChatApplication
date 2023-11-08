@@ -21,7 +21,7 @@ const UsernameInput = () => {
         if(usernameInput.length != 0) {
             setUsername(usernameInput);
             localStorage.setItem("username", usernameInput);
-            // router.push('/chats');
+            router.push('/chats');
         }
     };
 

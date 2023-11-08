@@ -34,6 +34,18 @@ httpServer.listen(port, () => {
     io.on(EVENTS.CONNECTION, (socket: Socket) => {
         console.log(`User ${socket.id} connected.`);
 
+        socket.emit("test-client", {
+            user: "test user",
+            text: "test message",
+            date: "11/7/23"
+        });
+
+        socket.on("test-server", (message) => {
+            console.log(message.user);
+            console.log(message.text);
+            console.log(message.date);        
+        });
+
         socket.on(EVENTS.DISCONNECT, () => {
             console.log(`User ${socket.id} disconnected.`);
         });

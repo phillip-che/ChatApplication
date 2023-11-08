@@ -1,5 +1,6 @@
 "use client";
 
+import "./page.module.css"
 import io from "socket.io-client"
 import { useEffect, useState } from "react"
 import { Socket } from "socket.io-client"
@@ -26,7 +27,7 @@ const useSocket = () => {
 
 export default function Home() {
 
-  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState<String>("");
   const socket = useSocket();
 
   useEffect(() => {
@@ -37,11 +38,20 @@ export default function Home() {
 
   return (
     <main>
-      <UsernameInput />
+      <div className="username-container">
+        <UsernameInput setUsername={setUsername} />      
+
+      {username ? 
+      <div>
+        Username: {username}
+      </div> : null }
+
+      </div>
       {socket ? 
       <div>
         Socket ID: {socket.id}
       </div> : null }
+
     </main>
   )
 }

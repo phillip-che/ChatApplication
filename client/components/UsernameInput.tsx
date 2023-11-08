@@ -16,7 +16,7 @@ const UsernameInput = ({ setUsername } : { setUsername: Dispatch<SetStateAction<
     const handleClick = () => {
         if(usernameInput.length != 0) {
             setUsername(usernameInput);
-            router.push('/chats');    
+            router.push('/chats');
         }
     };
 

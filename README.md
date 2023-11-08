@@ -8,6 +8,7 @@ Setup client:<br/>
 `cd client`<br/>
 `yarn add socket.io-client`<br/>
 `yarn add --dev typescript @types/react`<br/>
+`yarn add @mui/material @emotion/react @emotion/styled` <br/>
 
 Run Client:<br/>
 `yarn dev`<br/>

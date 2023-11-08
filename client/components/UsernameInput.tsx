@@ -9,10 +9,9 @@ import { useSocket } from '@/context/socket.context';
 
 const UsernameInput = () => {
     
-    // const { socket } = useSocket();
+    const { socket, username, setUsername } = useSocket();
     const router = useRouter();
     const [usernameInput, setUsernameInput] = useState<string>("");
-    const [username, setUsername] = useState<string>("");
 
     const handleChange = (e: any) => {
         setUsernameInput(e.target.value);
@@ -21,16 +20,13 @@ const UsernameInput = () => {
     const handleClick = () => {
         if(usernameInput.length != 0) {
             setUsername(usernameInput);
-            
             localStorage.setItem("username", usernameInput);
-            router.push('/chats');
+            // router.push('/chats');
         }
     };
 
     useEffect(() => {
-        if(!username) {
-            setUsername(localStorage.getItem("username") || "");
-        };
+        setUsername(localStorage.getItem("username") || "");
     }, []);
 
     return (

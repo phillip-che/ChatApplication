@@ -1,27 +1,24 @@
-"use client"
 
+'use client';
+
+import ChatRoom from '@/components/ChatRoom';
+import { Button } from '@mui/material';
 import Link from 'next/link';
-import { useEffect } from 'react'
 import { useSocket } from '@/context/socket.context';
 
 const Page = () => {
-
-  const { socket, username, setUsername } = useSocket();
-  
-  useEffect(() => {
-    setUsername(localStorage.getItem("username"));
-    console.log(socket.id);
-  }, [])
+  const { socket, username } = useSocket();
 
   return (
     <main>
-        <div>
-            Chat rooms
-            <div>Username: {username} </div>
-            <Link href="/" > Back </Link>
-        </div>
-    </main>
-  )
-}
+      <h1>Chat Room</h1>
+      <h3>Username: {username}</h3>
+      <ChatRoom socket="socket" username="username" />
+      <Button>
+        <Link href="/">Quit Chatroom</Link>
+      </Button>
+   </main>
+  );
+};
 
 export default Page;

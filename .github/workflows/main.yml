@@ -1,0 +1,65 @@
+name: ChatApplication main CI
+
+on:
+  push:
+    branches: ['main', 'ci-test']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup yarn
+        uses: mskelton/setup-yarn@v1
+        with:
+          node-version: '18.x'
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
+
+      - name: Install client dependencies
+        run: cd client && yarn
+
+      - name: Build client deployment
+        run: yarn build
+
+      # - name: Install backend dependencies
+      #   run: cd ../server && yarn
+
+      - name: Remove previous deployment
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            pm2 stop all
+            pm2 delete all
+            sudo rm -rf ChatApplication
+
+      - name: Send files to the instance
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: './*'
+          target: '~/ChatApplication'
+
+      - name: Start frontend server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            cd ChatApplication/client && pm2 start yarn --name "client" -- start

@@ -1,4 +1,4 @@
-name: ChatApplication main CI
+name: ChatApplication CI
 
 on:
   push:
@@ -30,13 +30,13 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
 
       - name: Install client dependencies
-        run: cd client && yarn
+        run: cd client && npm ci
 
       - name: Build client deployment
-        run: yarn build
+        run: npm run build
 
       # - name: Install backend dependencies
-      #   run: cd ../server && yarn
+      #   run: cd backend && npm install
 
       - name: Remove previous deployment
         uses: appleboy/ssh-action@v1.0.0
@@ -68,4 +68,4 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
-            cd ChatApplication/client && pm2 start yarn --name "client" -- start
+            cd ChatApplication/client && pm2 start npm --name "client" -- start

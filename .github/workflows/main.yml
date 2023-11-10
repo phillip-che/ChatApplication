@@ -30,7 +30,7 @@ jobs:
       #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
 
       - name: Install client dependencies and build client deployment
-        run: cd client && npm install && npm ci && npm run build
+        run: cd client && npm install && npm run build
 
       # - name: Install backend dependencies
       #   run: cd backend && npm install

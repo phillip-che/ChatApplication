@@ -1,12 +1,15 @@
 "use client"
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import io, { Socket } from "socket.io-client"
+import EVENTS from "@/config/events";
 
 interface Context {
     socket: Socket,
     username?: string,
-    setUsername: Function
+    setUsername: Function,
+    messages: {username: string, text: string}[],
+    setMessages: Function
 }
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
@@ -17,12 +20,30 @@ const socket = io(SOCKET_URL, {
     transports: ["websocket", "polling"]
 });
 
-const SocketContext = createContext<Context>({ socket, setUsername: () => false });
+const SocketContext = createContext<Context>({ 
+    socket, 
+    setUsername: () => false,
+    setMessages: () => false,
+    messages: []
+});
 
 const SocketsProvider = (props: any) => {
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState<string>("");
+    const [messages, setMessages] = useState<{username: string, text: string}[]>([]);
 
-    return <SocketContext.Provider value={{ socket, username, setUsername }} {...props} />
+    socket.on(EVENTS.CLIENT.SEND_MESSAGE, ({username, text}) => {
+        console.log("WORKED");
+        setMessages([...messages, {username, text}]);
+    });
+
+    useEffect(() => {
+        socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text}) => {
+            console.log("WORKED");
+            setMessages([...messages, {username, text}]);
+        });
+    }, [socket]);
+
+    return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages }} {...props} />
 }
 
 export const useSocket = () => useContext(SocketContext);

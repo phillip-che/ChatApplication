@@ -19,9 +19,16 @@ const io = new Server(httpServer, {
 const EVENTS = {
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
-  SEND_MESSAGE: 'send_message',
-  JOIN_ROOM: 'join_room',
-  LEAVE_ROOM: 'leave_room',
+  CLIENT: {
+    SEND_MESSAGE: 'c_send_message',
+    JOIN_ROOM: 'c_join_room',
+    LEAVE_ROOM: 'c_leave_room'
+  },
+  SERVER: {
+    SEND_MESSAGE: 's_send_message',
+    JOIN_ROOM: 's_join_room',
+    LEAVE_ROOM: 's_leave_room'
+  }
 };
 
 app.get('/', (_, res) => {
@@ -50,15 +57,16 @@ httpServer.listen(port, () => {
       console.log(`User ${socket.id} disconnected.`);
     });
 
-    socket.on(EVENTS.SEND_MESSAGE, (message) => {
-      console.log(message.username);
+    socket.on(EVENTS.SERVER.SEND_MESSAGE, (message) => {
+      socket.broadcast.emit(EVENTS.CLIENT.SEND_MESSAGE, (message));
+      io.emit(EVENTS.CLIENT.SEND_MESSAGE, (message));
     });
 
-    socket.on(EVENTS.JOIN_ROOM, (room) => {
+    socket.on(EVENTS.SERVER.JOIN_ROOM, (room) => {
       console.log(`User ${socket.id} joined room ${room.id}`);
     });
 
-    socket.on(EVENTS.LEAVE_ROOM, (room) => {
+    socket.on(EVENTS.SERVER.LEAVE_ROOM, (room) => {
       console.log(`User ${socket.id} left room ${room.id}`);
     });
   });

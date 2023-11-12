@@ -1,25 +1,43 @@
 'use client';
 
 import { Button, TextField } from '@mui/material';
+import { useSocket } from "@/context/socket.context"
+import { useEffect, useState } from 'react'
+import MessagesContainer from './MessagesContainer';
+import EVENTS from '@/config/events';
 
-const ChatRoom = ({
-  socket,
-  username,
-  room,
-}: {
-  socket: string;
-  username: string;
-  room?: string;
-}) => {
+const ChatRoom = () => {
+
+  const { socket, username, setUsername, messages, setMessages } = useSocket();
+  const [ textInput, setTextInput ] = useState("");
+
+  const handleChange = (e: any) => {
+    setTextInput(e.target.value);
+  };
+
+  const handleSendClick = () => {
+    setMessages([...messages, {username: username, text: textInput}]);
+    socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {username: username, text: textInput});
+    setTextInput("");
+  };
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+    setMessages([...messages]);
+  }, []);
+
   return (
-    <>
+    <div>
+      <MessagesContainer />
       <TextField
+        value={textInput}
+        onChange={handleChange}
         type="text"
         placeholder="Enter your message here.."
         fullWidth
       />
-      <Button>Send</Button>
-    </>
+      <Button onClick={handleSendClick}> Send </Button>
+    </div>
   );
 };
 

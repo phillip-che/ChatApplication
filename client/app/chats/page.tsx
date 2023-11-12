@@ -1,4 +1,3 @@
-
 'use client';
 
 import ChatRoom from '@/components/ChatRoom';
@@ -13,7 +12,7 @@ const Page = () => {
     <main>
       <h1>Chat Room</h1>
       <h3>Username: {username}</h3>
-      <ChatRoom socket="socket" username="username" />
+      <ChatRoom />
       <Button>
         <Link href="/">Quit Chatroom</Link>
       </Button>

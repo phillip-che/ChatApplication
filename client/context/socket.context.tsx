@@ -31,17 +31,15 @@ const SocketsProvider = (props: any) => {
     const [username, setUsername] = useState<string>("");
     const [messages, setMessages] = useState<{username: string, text: string}[]>([]);
 
-    socket.on(EVENTS.CLIENT.SEND_MESSAGE, ({username, text}) => {
-        console.log("WORKED");
-        setMessages([...messages, {username, text}]);
-    });
-
     useEffect(() => {
         socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text}) => {
-            console.log("WORKED");
             setMessages([...messages, {username, text}]);
         });
     }, [socket]);
+
+    socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text}) => {
+        setMessages([...messages, {username, text}]);
+    });
 
     return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages }} {...props} />
 }

@@ -9,20 +9,19 @@ import EVENTS from '@/config/events';
 const ChatRoom = () => {
 
   const { socket, username, setUsername, messages, setMessages } = useSocket();
-  const [textInput, setTextInput] = useState("");
+  const [ textInput, setTextInput ] = useState("");
 
   const handleChange = (e: any) => {
     setTextInput(e.target.value);
-  }
+  };
 
   const handleSendClick = () => {
-    socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {username, textInput});
     setMessages([...messages, {username: username, text: textInput}]);
+    socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {username: username, text: textInput});
     setTextInput("");
-  }
+  };
 
   useEffect(() => {
-    console.log(messages);
     setUsername(localStorage.getItem("username"));
     setMessages([...messages]);
   }, []);

@@ -27,7 +27,9 @@ const UsernameInput = () => {
     };
 
     useEffect(() => {
+      if(!username) {
         setUsername(localStorage.getItem("username") || "");
+      };
     }, []);
 
   const logoutHandler = () => {

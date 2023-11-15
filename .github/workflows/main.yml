@@ -33,7 +33,7 @@ jobs:
         run: cd client && npm install && npm run build
 
       - name: Install backend dependencies
-        run: cd ../server && npm install
+        run: cd server && npm install
 
       - name: Remove previous deployment
         uses: appleboy/ssh-action@v1.0.0

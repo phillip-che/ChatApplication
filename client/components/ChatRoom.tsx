@@ -21,6 +21,12 @@ const ChatRoom = () => {
     setTextInput("");
   };
 
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
+      handleSendClick();
+    }
+  };
+
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
     setMessages([...messages]);
@@ -32,6 +38,7 @@ const ChatRoom = () => {
       <TextField
         value={textInput}
         onChange={handleChange}
+        onKeyDown={handleKeyPress}
         type="text"
         placeholder="Enter your message here.."
         fullWidth

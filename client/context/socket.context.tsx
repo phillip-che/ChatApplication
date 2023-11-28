@@ -9,7 +9,8 @@ interface Context {
     username?: string,
     setUsername: Function,
     messages: {username: string, text: string}[],
-    setMessages: Function
+    setMessages: Function,
+    roomID?: string
 }
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
@@ -30,6 +31,7 @@ const SocketContext = createContext<Context>({
 const SocketsProvider = (props: any) => {
     const [username, setUsername] = useState<string>("");
     const [messages, setMessages] = useState<{username: string, text: string}[]>([]);
+    const [roomID, setRoomID] = useState<string>("");
 
     useEffect(() => {
         socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text}) => {
@@ -37,11 +39,20 @@ const SocketsProvider = (props: any) => {
         });
     }, [socket]);
 
+    useEffect(() => {
+        setMessages([]);
+    }, [roomID]);
+
     socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text}) => {
         setMessages([...messages, {username, text}]);
     });
 
-    return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages }} {...props} />
+    socket.on(EVENTS.SERVER.JOIN_ROOM, ({roomID, username}) => {
+        setRoomID(roomID);
+        setMessages([]);
+    });
+
+    return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages, roomID }} {...props} />
 }
 
 export const useSocket = () => useContext(SocketContext);

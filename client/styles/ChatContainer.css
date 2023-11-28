@@ -1,0 +1,9 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.message-input {
+    display: flex;
+}

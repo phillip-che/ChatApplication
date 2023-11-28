@@ -1,5 +1,7 @@
 .message { 
     display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .message p {

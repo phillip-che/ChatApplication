@@ -46,12 +46,15 @@ httpServer.listen(port, () => {
       console.log(`User ${socket.id} disconnected.`);
     });
 
-    socket.on(EVENTS.CLIENT.SEND_MESSAGE, (message) => {
-      socket.broadcast.emit(EVENTS.SERVER.SEND_MESSAGE, (message));
+    socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
+      console.log(`${data.username} sent ${data.text} to ${data.roomID}`);
+      socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, (data));
     });
 
-    socket.on(EVENTS.CLIENT.JOIN_ROOM, (room) => {
-      console.log(`User ${socket.id} joined room ${room.id}`);
+    socket.on(EVENTS.CLIENT.JOIN_ROOM, (data) => {
+      console.log(`${data.username} joined ${data.roomID}`);
+      socket.join(data.roomID);
+      socket.emit(EVENTS.SERVER.JOIN_ROOM, (data));
     });
 
     socket.on(EVENTS.CLIENT.LEAVE_ROOM, (room) => {

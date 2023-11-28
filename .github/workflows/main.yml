@@ -1,0 +1,68 @@
+name: ChatApplication CI
+
+on:
+  push:
+    branches: ['main', 'ci-test']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          # cache: 'npm'
+
+      # - name: Restore cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       .next/cache
+      #     key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
+
+      - name: Install client dependencies and build client deployment
+        run: cd client && npm install && npm run build
+
+      # - name: Install backend dependencies
+      #   run: cd backend && npm install
+
+      - name: Remove previous deployment
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            pm2 stop all
+            pm2 delete all
+            sudo rm -rf ChatApplication
+
+      - name: Send files to the instance
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: './*'
+          target: '~/ChatApplication'
+
+      - name: Start frontend server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            cd ChatApplication/client && pm2 start npm --name "client" -- start

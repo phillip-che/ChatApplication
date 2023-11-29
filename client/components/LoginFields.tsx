@@ -28,8 +28,8 @@ const LoginFields = () => {
   };
 
   const handleCreateRoomClick = () => {
-
-  }
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM, {username: username, socketID: socket.id});
+  };
 
   useEffect(() => {
     setUsername(localStorage.getItem("username") || "");
@@ -116,6 +116,7 @@ const LoginFields = () => {
         }}
         style={{
           backgroundColor: "#797272",
+          width: "200px"
         }}
         variant="contained"
         disabled={(!usernameInput || !roomIDInput)}
@@ -135,6 +136,7 @@ const LoginFields = () => {
         }}
         style={{
           backgroundColor: "#797272",
+          width: "200px"
         }}
         variant="contained" 
         disabled={!usernameInput}
@@ -142,7 +144,6 @@ const LoginFields = () => {
         >
           Create Room
         </Button>
-
       </div>  
     </Box>
   </div>

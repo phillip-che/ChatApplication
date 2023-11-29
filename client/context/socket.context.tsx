@@ -47,7 +47,7 @@ const SocketsProvider = (props: any) => {
         setMessages([...messages, {username, text}]);
     });
 
-    socket.on(EVENTS.SERVER.JOIN_ROOM, ({roomID, username}) => {
+    socket.on(EVENTS.SERVER.JOIN_ROOM, ({roomID}) => {
         setRoomID(roomID);
         setMessages([]);
     });

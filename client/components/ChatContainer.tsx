@@ -39,7 +39,6 @@ const ChatContainer = () => {
 
   return (
     <div className="chat-container">
-      <h1>Room ID: {roomID}</h1>
       <MessagesContainer />
       <div className="message-input">
         <TextField

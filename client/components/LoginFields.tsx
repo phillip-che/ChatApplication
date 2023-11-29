@@ -4,14 +4,12 @@ import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/navigation';
 import { useSocket } from '@/context/socket.context';
 import EVENTS from '@/config/events';
 
 const LoginFields = () => {
     
     const { socket, username, setUsername, roomID } = useSocket();
-    const router = useRouter();
     const [usernameInput, setUsernameInput] = useState<string>("");
     const [roomIDInput, setRoomIDInput] = useState<string>("");
 
@@ -27,7 +25,6 @@ const LoginFields = () => {
     setUsername(usernameInput);
     localStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: username, socketID: socket.id});
-    router.push('/chats');
   };
 
   const handleCreateRoomClick = () => {
@@ -53,7 +50,7 @@ const LoginFields = () => {
         <div className="username-container">
           <TextField
             sx={{ 
-              input: { color: "#F7F7F8" }, 
+              input: { color: "#F7F7F8" },
               label: {color: "#797272"},
               "& .MuiInputLabel-root": {color: '#76736F'}, 
               "& .MuiOutlinedInput-root": {

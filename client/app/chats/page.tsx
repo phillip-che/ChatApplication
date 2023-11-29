@@ -9,7 +9,7 @@ const Page = () => {
     <main>
       <div className="chat-room">
         <ChatContainer />
-        <Button>
+        <Button sx={{color: "#F7F7F8"}} >
           <Link href="/">Leave Chat</Link>
         </Button>
       </div>

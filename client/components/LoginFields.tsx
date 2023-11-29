@@ -52,6 +52,20 @@ const LoginFields = () => {
       >
         <div className="username-container">
           <TextField
+            sx={{ 
+              input: { color: "#F7F7F8" }, 
+              label: {color: "#797272"},
+              "& .MuiInputLabel-root": {color: '#76736F'}, 
+              "& .MuiOutlinedInput-root": {
+                "& > fieldset": { borderColor: "#76736F" },
+              },
+              "& .MuiOutlinedInput-root.Mui-focused": {
+                "& > fieldset": { borderColor: "#797272"}
+              },
+              "& .MuiOutlinedInput-root:hover": {
+                "& > fieldset": { borderColor: "#F7F7F8"}
+              },
+            }}
             onChange={handleUsernameChange}
             required
             id="outlined-basic"
@@ -72,6 +86,22 @@ const LoginFields = () => {
       <div className="room-container">
 
         <TextField
+          sx={{ 
+            input: { color: "#F7F7F8" }, 
+            label: {color: "#797272"},
+            "& .MuiInputLabel-root": {color: '#76736F'}, 
+            "& .MuiOutlinedInput-root": {
+              "& > fieldset": { borderColor: "#76736F" },
+            },
+            "& .MuiOutlinedInput-root.Mui-focused": {
+              "& > fieldset": {
+                borderColor: "#797272"}
+            },
+            "& .MuiOutlinedInput-root:hover": {
+              "& > fieldset": {
+                borderColor: "#F7F7F8"}
+            },
+          }}
           onChange={handleRoomChange}
           required
           id="outlined-basic"
@@ -81,6 +111,15 @@ const LoginFields = () => {
         />
         
         <Button 
+        sx={{
+          "&.Mui-disabled": {
+            opacity: ".5",
+            color: "#c0c0c0"
+          }
+        }}
+        style={{
+          backgroundColor: "#797272",
+        }}
         variant="contained"
         disabled={(!usernameInput || !roomIDInput)}
         onClick={handleJoinRoomClick}
@@ -91,6 +130,15 @@ const LoginFields = () => {
         <p>OR</p>
 
         <Button 
+        sx={{
+          "&.Mui-disabled": {
+            opacity: ".5",
+            color: "#c0c0c0"
+          }
+        }}
+        style={{
+          backgroundColor: "#797272",
+        }}
         variant="contained" 
         disabled={!usernameInput}
         onClick={handleCreateRoomClick}

@@ -39,10 +39,27 @@ const ChatContainer = () => {
 
   return (
     <div className="chat-container">
-      <h1>Room: {roomID}</h1>
+      <h1>Room ID: {roomID}</h1>
       <MessagesContainer />
       <div className="message-input">
         <TextField
+          sx={{ 
+            input: { color: "#F7F7F8" }, 
+            fieldset: { borderColor: "#797272" },
+            label: {color: "#797272"},
+            "& .MuiInputLabel-root": {color: '#76736F'}, 
+            "& .MuiOutlinedInput-root": {
+              "& > fieldset": { borderColor: "#76736F" },
+            },
+            "& .MuiOutlinedInput-root.Mui-focused": {
+              "& > fieldset": {
+                borderColor: "#797272"}
+            },
+            "& .MuiOutlinedInput-root:hover": {
+              "& > fieldset": {
+                borderColor: "#F7F7F8"}
+            },
+          }}
           value={textInput}
           onChange={handleChange}
           onKeyDown={handleKeyPress}
@@ -50,7 +67,12 @@ const ChatContainer = () => {
           placeholder="Enter your message here.."
           fullWidth
         />
-        <Button onClick={handleSendClick}> Send </Button>
+        <Button 
+          sx={{color: "#F7F7F8"}}
+          onClick={handleSendClick}
+        > 
+          Send 
+        </Button>
       </div>
     </div>
   );

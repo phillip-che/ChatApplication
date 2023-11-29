@@ -11,8 +11,8 @@ import Button from '@mui/material/Button';
 
 const NavBar = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box color={"black"} sx={{ flexGrow: 1 }}>
+      <AppBar style={{ background: '#141415' }} position="static">
         <Toolbar>
           <IconButton
             size="large"

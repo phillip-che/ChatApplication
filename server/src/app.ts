@@ -57,8 +57,10 @@ httpServer.listen(port, () => {
       socket.emit(EVENTS.SERVER.JOIN_ROOM, (data));
     });
 
-    socket.on(EVENTS.CLIENT.LEAVE_ROOM, (room) => {
-      console.log(`User ${socket.id} left room ${room.id}`);
+    socket.on(EVENTS.CLIENT.LEAVE_ROOM, (data) => {
+      console.log(`User ${socket.id} left room ${data.roomID}`);
+      socket.leave(data.roomID);
+      socket.emit(EVENTS.SERVER.LEAVE_ROOM, (data));
     });
   });
 });

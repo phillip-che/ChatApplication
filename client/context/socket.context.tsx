@@ -52,9 +52,13 @@ const SocketsProvider = (props: any) => {
         setMessages([]);
     });
 
+    socket.on(EVENTS.SERVER.LEAVE_ROOM, ({roomID}) => {
+        setRoomID("");
+    });
+
     return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages, roomID }} {...props} />
 }
 
 export const useSocket = () => useContext(SocketContext);
 
-export default SocketsProvider
+export default SocketsProvider;

@@ -24,7 +24,7 @@ const NavBar = () => {
             {/* <MenuIcon />   */}
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            InstaChat
+            CypherChat
           </Typography>
           {/* <Button color="inherit">Home</Button> */}
         </Toolbar>

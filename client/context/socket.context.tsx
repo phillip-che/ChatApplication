@@ -10,7 +10,7 @@ interface Context {
     setUsername: Function,
     messages: {username: string, text: string, timestamp: string}[],
     setMessages: Function,
-    roomID?: 
+    roomID?: string
 }
 
 const SOCKET_URL =

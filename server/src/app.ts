@@ -1,6 +1,7 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
+import { nanoid } from 'nanoid';
 
 const port = process.env.PORT || 4000;
 const corsOrigin = '*';
@@ -23,12 +24,14 @@ const EVENTS = {
     SEND_MESSAGE: 'c_send_message',
     JOIN_ROOM: 'c_join_room',
     LEAVE_ROOM: 'c_leave_room',
+    CREATE_ROOM: 'c_create_room'
   },
   SERVER: {
     SEND_MESSAGE: 's_send_message',
     JOIN_ROOM: 's_join_room',
     LEAVE_ROOM: 's_leave_room',
-  },
+    CREATE_ROOM: 'c_create_room'
+  }
 };
 
 app.get('/', (_, res) => {
@@ -45,16 +48,33 @@ httpServer.listen(port, () => {
       console.log(`User ${socket.id} disconnected.`);
     });
 
-    socket.on(EVENTS.CLIENT.SEND_MESSAGE, (message) => {
-      socket.broadcast.emit(EVENTS.SERVER.SEND_MESSAGE, message);
+    socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
+      console.log(`${data.username} sent ${data.text} to ${data.roomID}`);
+      socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, 
+        {
+          username: data.username,
+          text: data.text,
+          timestamp: data.timestamp
+      });
     });
 
-    socket.on(EVENTS.CLIENT.JOIN_ROOM, (room) => {
-      console.log(`User ${socket.id} joined room ${room.id}`);
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, () => {
+      const roomID = nanoid(10);
+      console.log(`Created room: ${roomID}`);
+      socket.join(roomID);
+      socket.emit(EVENTS.SERVER.JOIN_ROOM, {roomID});
     });
 
-    socket.on(EVENTS.CLIENT.LEAVE_ROOM, (room) => {
-      console.log(`User ${socket.id} left room ${room.id}`);
+    socket.on(EVENTS.CLIENT.JOIN_ROOM, (data) => {
+      console.log(`${data.username} joined ${data.roomID}`);
+      socket.join(data.roomID);
+      socket.emit(EVENTS.SERVER.JOIN_ROOM, data);
+    });
+
+    socket.on(EVENTS.CLIENT.LEAVE_ROOM, (data) => {
+      console.log(`User ${socket.id} left room ${data.roomID}`);
+      socket.leave(data.roomID);
+      socket.emit(EVENTS.SERVER.LEAVE_ROOM, data);
     });
   });
 });

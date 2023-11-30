@@ -1,7 +1,46 @@
 .message { 
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 10px;
 }
 
-.message p {
+.user {
     font-weight: bold;
+    font-size: 10px;
+}
+
+.text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.timestamp {
+    font-size: 10px;
+    color: #929292;
+}
+
+#you {
+    align-items: flex-end;
+    margin-right: 5px;
+}
+  
+#you .text {
+    justify-content: flex-start;
+    background-color: #F7F7F8;
+    color: #3E3E3D;
+}
+
+#other {
+    align-items: flex-start;
+    margin-left: 5px;
+}
+
+#other .text {
+    justify-content: flex-end;
+    background-color: #3E3E3D;
 }

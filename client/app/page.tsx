@@ -1,12 +1,10 @@
 import "./page.module.css"
-import UsernameInput from '@/components/UsernameInput';
+import HomeContainer from '@/components/HomeContainer';
 
 export default function Home() {
   return (
     <main>
-      <div className="username-container">
-        <UsernameInput />
-      </div>
+      <HomeContainer />
     </main>
   )
 }

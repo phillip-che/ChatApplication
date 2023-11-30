@@ -6,14 +6,21 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import UsernameInput from './UsernameInput';
 import Button from '@mui/material/Button';
+import EVENTS from '@/config/events';
+import { useSocket } from "@/context/socket.context"
+
 
 const NavBar = () => {
+  const { socket, username, setUsername, roomID } = useSocket();
+
+  const handleLeaveChatClick = () => {
+    socket.emit(EVENTS.CLIENT.LEAVE_ROOM, {roomID});
+  }
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box color={"black"} sx={{ flexGrow: 1 }}>
+      <AppBar style={{ background: '#141415' }} position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -22,12 +29,18 @@ const NavBar = () => {
             aria-label="menu"
             sx={{ mr: 0 }}
           >
-            {/* <MenuIcon />   */}
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            InstaChat
+            CypherChat
           </Typography>
-          {/* <Button color="inherit">Home</Button> */}
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {roomID ? <div>RoomID: {roomID} </div> : null}
+          </Typography>
+          {roomID ?
+            <Button color='inherit' onClick={handleLeaveChatClick}>
+              Leave Chat
+            </Button>
+          : null}
         </Toolbar>
       </AppBar>
     </Box>

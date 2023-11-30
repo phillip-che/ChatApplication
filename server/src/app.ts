@@ -3,7 +3,7 @@ import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 
 const port = process.env.PORT || 4000;
-const corsOrigin = 'http://localhost:3000';
+const corsOrigin = '*';
 
 const app = express();
 
@@ -22,13 +22,13 @@ const EVENTS = {
   CLIENT: {
     SEND_MESSAGE: 'c_send_message',
     JOIN_ROOM: 'c_join_room',
-    LEAVE_ROOM: 'c_leave_room'
+    LEAVE_ROOM: 'c_leave_room',
   },
   SERVER: {
     SEND_MESSAGE: 's_send_message',
     JOIN_ROOM: 's_join_room',
-    LEAVE_ROOM: 's_leave_room'
-  }
+    LEAVE_ROOM: 's_leave_room',
+  },
 };
 
 app.get('/', (_, res) => {
@@ -39,7 +39,6 @@ httpServer.listen(port, () => {
   console.log(`Listening on port ${port}`);
 
   io.on(EVENTS.CONNECTION, (socket: Socket) => {
-
     console.log(`User ${socket.id} connected.`);
 
     socket.on(EVENTS.DISCONNECT, () => {
@@ -47,7 +46,7 @@ httpServer.listen(port, () => {
     });
 
     socket.on(EVENTS.CLIENT.SEND_MESSAGE, (message) => {
-      socket.broadcast.emit(EVENTS.SERVER.SEND_MESSAGE, (message));
+      socket.broadcast.emit(EVENTS.SERVER.SEND_MESSAGE, message);
     });
 
     socket.on(EVENTS.CLIENT.JOIN_ROOM, (room) => {

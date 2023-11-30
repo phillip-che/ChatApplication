@@ -23,8 +23,11 @@ const MessageInput = () => {
         if (textInput.length < 1) {
             return;
         }
-        setMessages([...messages, {username: username, text: textInput}]);
-        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {roomID: roomID, username: username, text: textInput});
+        const date = new Date();
+        const timestamp = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  
+        setMessages([...messages, {username: username, text: textInput, timestamp: timestamp}]);
+        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {roomID: roomID, username: username, text: textInput, timestamp: timestamp});
         setTextInput("");
     };
 

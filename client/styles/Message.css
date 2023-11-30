@@ -19,6 +19,11 @@
     border-radius: 5px;
 }
 
+.timestamp {
+    font-size: 10px;
+    color: #929292;
+}
+
 #you {
     align-items: flex-end;
     margin-right: 5px;

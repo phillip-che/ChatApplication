@@ -1,8 +1,8 @@
-"use client"
+'use client';
 
-import { createContext, useContext, useState, useEffect } from "react";
-import io, { Socket } from "socket.io-client"
-import EVENTS from "@/config/events";
+import { createContext, useContext, useState, useEffect } from 'react';
+import io, { Socket } from 'socket.io-client';
+import EVENTS from '@/config/events';
 
 interface Context {
     socket: Socket,
@@ -10,22 +10,23 @@ interface Context {
     setUsername: Function,
     messages: {username: string, text: string, timestamp: string}[],
     setMessages: Function,
-    roomID?: string
+    roomID?: 
 }
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
+const SOCKET_URL =
+  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.153.32.172:4000';
 
 const socket = io(SOCKET_URL, {
-    reconnection: true,
-    upgrade: true,
-    transports: ["websocket", "polling"]
+  reconnection: true,
+  upgrade: true,
+  transports: ['websocket', 'polling'],
 });
 
-const SocketContext = createContext<Context>({ 
-    socket, 
-    setUsername: () => false,
-    setMessages: () => false,
-    messages: []
+const SocketContext = createContext<Context>({
+  socket,
+  setUsername: () => false,
+  setMessages: () => false,
+  messages: [],
 });
 
 const SocketsProvider = (props: any) => {
@@ -53,8 +54,10 @@ const SocketsProvider = (props: any) => {
     });
 
     socket.on(EVENTS.SERVER.LEAVE_ROOM, () => {
-        setRoomID("");
+
     });
+  }, [socket]);
+
 
     return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages, roomID }} {...props} />
 }

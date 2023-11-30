@@ -27,6 +27,7 @@
 #you {
     align-items: flex-end;
     margin-right: 5px;
+    margin-left: 100px;
 }
   
 #you .text {
@@ -38,6 +39,7 @@
 #other {
     align-items: flex-start;
     margin-left: 5px;
+    margin-right: 100px;
 }
 
 #other .text {

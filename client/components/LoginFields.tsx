@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useSocket } from '@/context/socket.context';
 import EVENTS from '@/config/events';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginFields = () => {
     
@@ -22,12 +24,38 @@ const LoginFields = () => {
   };
 
   const handleJoinRoomClick = () => {
+    if(usernameInput.length > 32) {
+      toast.error('Username cannot be more than 32 characters', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+        return;
+    }
     setUsername(usernameInput);
     localStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: username, socketID: socket.id});
   };
 
   const handleCreateRoomClick = () => {
+    if(usernameInput.length > 32) {
+      toast.error('Username cannot be more than 32 characters', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+        return;
+    }
     socket.emit(EVENTS.CLIENT.CREATE_ROOM);
   };
 
@@ -148,6 +176,7 @@ const LoginFields = () => {
         </Button>
       </div>  
     </Box>
+    <ToastContainer />
   </div>
   );
 };

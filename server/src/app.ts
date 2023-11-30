@@ -1,6 +1,7 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
+import { nanoid } from 'nanoid';
 
 const port = process.env.PORT || 4000;
 const corsOrigin = 'http://localhost:3000';
@@ -49,6 +50,13 @@ httpServer.listen(port, () => {
     socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
       console.log(`${data.username} sent ${data.text} to ${data.roomID}`);
       socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, (data));
+    });
+
+    socket.on("create-room", () => {
+      const roomID = nanoid(10);
+      console.log(`Created room: ${roomID}`);
+      socket.join(roomID);
+      socket.emit(EVENTS.SERVER.JOIN_ROOM, ({roomID}));
     });
 
     socket.on(EVENTS.CLIENT.JOIN_ROOM, (data) => {

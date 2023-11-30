@@ -28,7 +28,7 @@ const LoginFields = () => {
   };
 
   const handleCreateRoomClick = () => {
-    socket.emit(EVENTS.CLIENT.JOIN_ROOM, {username: username, socketID: socket.id});
+    socket.emit("create-room");
   };
 
   useEffect(() => {

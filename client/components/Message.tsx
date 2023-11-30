@@ -1,10 +1,17 @@
-import "../styles/Message.css"
+"use client"
 
-const Message = ({username, text} : {username: string, text: string}) => {
+import "../styles/Message.css"
+import { useSocket } from "@/context/socket.context"
+
+const Message = ({author, text} : {author: string, text: string}) => {
+
+  const { username } = useSocket();
+
   return (
     <div>
-      <div className="message">
-        <p>{username}</p>: {text}
+      <div className="message" id={username === author ? "you" : "other"}>
+        <p className="user">{author}</p>
+        <p className="text">{text}</p>
       </div> 
     </div>
   )

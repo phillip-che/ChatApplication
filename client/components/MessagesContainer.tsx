@@ -25,7 +25,7 @@ const MessagesContainer = () => {
     return (
     <div className="messages-container">
         {messages?.map((message, i) => (
-            <Message username={message.username} text={message.text} key={i} />
+            <Message author={message.username} text={message.text} key={i} />
         ))}
         <div ref={messagesEndRef} />
     </div>

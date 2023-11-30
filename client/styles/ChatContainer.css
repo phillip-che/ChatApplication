@@ -2,12 +2,5 @@
     display: flex;
     flex-direction: column;
     width: 500px;
-    margin-top: 25px;
-}
-
-.message-input {
-    display: flex;
-    position: absolute;
-    width: 500px;
-    bottom: 25px;
+    margin: 50px auto;
 }

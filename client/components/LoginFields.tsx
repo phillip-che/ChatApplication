@@ -52,7 +52,8 @@ const LoginFields = () => {
             sx={{ 
               input: { color: "#F7F7F8" },
               label: {color: "#797272"},
-              "& .MuiInputLabel-root": {color: '#76736F'}, 
+              "& .MuiInputLabel-root": {color: '#76736F'},
+              "& .MuiInputLabel-root.Mui-focused": {color: '#76736F'}, 
               "& .MuiOutlinedInput-root": {
                 "& > fieldset": { borderColor: "#76736F" },
               },
@@ -87,6 +88,7 @@ const LoginFields = () => {
             input: { color: "#F7F7F8" }, 
             label: {color: "#797272"},
             "& .MuiInputLabel-root": {color: '#76736F'}, 
+            "& .MuiInputLabel-root.Mui-focused": {color: '#76736F'}, 
             "& .MuiOutlinedInput-root": {
               "& > fieldset": { borderColor: "#76736F" },
             },

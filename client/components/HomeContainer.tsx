@@ -5,7 +5,7 @@ import ChatContainer from '@/components/ChatContainer';
 import { useSocket } from '@/context/socket.context';
 
 const HomeContainer = () => {
-  const { username, roomID } = useSocket();
+  const { roomID } = useSocket();
 
   return (
     <div>

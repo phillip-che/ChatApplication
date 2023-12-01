@@ -2,6 +2,8 @@ import "../styles/MessageInput.css"
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react'
 import { useSocket } from "@/context/socket.context"
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import EVENTS from '@/config/events';
 
 const MessageInput = () => {
@@ -33,6 +35,15 @@ const MessageInput = () => {
 
     return (
         <div className="message-input">
+            <div className="file-upload">
+                <label 
+                    // onChange={handleFile} 
+                    htmlFor="formId"
+                >
+                    <input name="" type="file" id="formId" hidden />
+                    <FileUploadOutlinedIcon />
+                </label>
+            </div>
             <TextField
                 sx={{ 
                 input: { color: "#F7F7F8" }, 
@@ -48,21 +59,28 @@ const MessageInput = () => {
                 },
                 "& .MuiOutlinedInput-root:hover": {
                     "& > fieldset": {
-                    borderColor: "#F7F7F8"}
+                    borderColor: "#76736F"}
                 },
                 }}
                 value={textInput}
                 onChange={handleChange}
                 onKeyDown={handleKeyPress}
                 type="text"
-                placeholder="Enter your message here.."
+                placeholder="Message"
                 fullWidth
             />
-            <Button 
-                sx={{color: "#F7F7F8"}}
+            <Button
+                className="send-message-button"
+                sx={{
+                    color: "#F7F7F8",
+                    ':hover': {
+                        bgcolor: 'transparent', 
+                        opacity: '0.5',
+                    }
+                }}
                 onClick={handleSendClick}
-            > 
-                Send 
+            >
+                <SendOutlinedIcon /> 
             </Button>
         </div>
     )

@@ -1,5 +1,26 @@
 .message-input {
     display: flex;
-    width: 500px;
+    width: 750px;
     margin-top: 10px;
+
+}
+
+.send-message-button {
+    margin: -10px;
+}
+
+.file-upload {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.file-upload label {
+    transform: scale(1.3);
+    color: #F7F7F8;
+    cursor: pointer;
+}
+
+.file-upload label:hover {
+    opacity: 0.5;
 }

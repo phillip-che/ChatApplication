@@ -55,8 +55,10 @@ const LoginFields = () => {
         theme: "dark",
         });
         return;
-    }
-    socket.emit(EVENTS.CLIENT.CREATE_ROOM);
+    };
+    setUsername(usernameInput);
+    localStorage.setItem("username", usernameInput);
+    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username});
   };
 
   useEffect(() => {

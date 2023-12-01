@@ -59,15 +59,23 @@ httpServer.listen(port, () => {
       });
     });
 
-    socket.on(EVENTS.CLIENT.CREATE_ROOM, () => {
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, (data) => {
+      socket.data.username = data.username;
       const roomID = nanoid(10);
       console.log(`Created room: ${roomID}`);
       socket.join(roomID);
       socket.emit(EVENTS.SERVER.JOIN_ROOM, {roomID});
     });
 
-    socket.on(EVENTS.CLIENT.JOIN_ROOM, (data) => {
+    socket.on(EVENTS.CLIENT.JOIN_ROOM, async (data) => {
       console.log(`${data.username} joined ${data.roomID}`);
+      socket.data.username = data.username;
+      const sockets = await io.in(data.roomID).fetchSockets();
+      
+      sockets.forEach((socket, i) => {
+        console.log(`socket ${i}: ${socket.data.username}`);
+      });
+
       socket.join(data.roomID);
       socket.emit(EVENTS.SERVER.JOIN_ROOM, data);
     });

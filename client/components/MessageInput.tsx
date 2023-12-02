@@ -25,8 +25,10 @@ const MessageInput = () => {
     const handleFile = (e: any) => {
         fileRef.current = e.target.files[0];
         const timestamp = getTime();
-        setMessages([...messages, {type: "file", username: username, body: fileRef.current, timestamp: timestamp}]);
-        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "file", roomID: roomID, username: username, body: fileRef.current, timestamp: timestamp});    
+        if(fileRef.current) {
+            setMessages([...messages, {type: "file", username: username, body: fileRef.current, timestamp: timestamp}]);
+            socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "file", roomID: roomID, username: username, body: fileRef.current, timestamp: timestamp});    
+        }
     };
 
     const handleSendClick = () => {

@@ -14,7 +14,7 @@ interface Context {
 }
 
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.153.32.172:4000';
+  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000';
 
 const socket = io(SOCKET_URL, {
     reconnection: true,
@@ -58,7 +58,8 @@ const SocketsProvider = (props: any) => {
     });
 
     return <SocketContext.Provider value={{ socket, username, setUsername, messages, setMessages, roomID }} {...props} />
-}
+
+  };
 
 export const useSocket = () => useContext(SocketContext);
 

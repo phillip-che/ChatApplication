@@ -4,7 +4,7 @@ import { Server, Socket } from 'socket.io';
 import { nanoid } from 'nanoid';
 
 const port = process.env.PORT || 4000;
-const corsOrigin = 'http://localhost:3000';
+const corsOrigin = '*';
 
 const app = express();
 
@@ -43,7 +43,6 @@ httpServer.listen(port, () => {
   console.log(`Listening on port ${port}`);
 
   io.on(EVENTS.CONNECTION, (socket: Socket) => {
-
     console.log(`User ${socket.id} connected.`);
 
     socket.on(EVENTS.DISCONNECT, () => {

@@ -32,8 +32,8 @@ jobs:
       - name: Install client dependencies and build client deployment
         run: cd client && npm install && npm run build
 
-      # - name: Install backend dependencies
-      #   run: cd backend && npm install
+      - name: Install backend dependencies
+        run: cd server && npm install
 
       - name: Remove previous deployment
         uses: appleboy/ssh-action@v1.0.0
@@ -66,3 +66,4 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
             cd ChatApplication/client && pm2 start npm --name "client" -- start
+            cd ../server && pm2 start npm --name "server" -- start

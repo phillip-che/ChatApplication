@@ -11,7 +11,7 @@ const EVENTS = {
         SEND_MESSAGE: 's_send_message',
         JOIN_ROOM: 's_join_room',
         LEAVE_ROOM: 's_leave_room',
-        CREATE_ROOM: 'c_create_room'
+        CREATE_ROOM: 's_create_room'
     }
 };
 

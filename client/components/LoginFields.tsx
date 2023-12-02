@@ -39,7 +39,7 @@ const LoginFields = () => {
     }
     setUsername(usernameInput);
     localStorage.setItem("username", usernameInput);
-    socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: username, socketID: socket.id});
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: usernameInput, socketID: socket.id});
   };
 
   const handleCreateRoomClick = () => {

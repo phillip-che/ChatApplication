@@ -8,7 +8,7 @@ interface Context {
     socket: Socket,
     username?: string,
     setUsername: Function,
-    messages: {username: string, text: string, timestamp: string}[],
+    messages: {type: string, username: string, body: string, timestamp: string}[],
     setMessages: Function,
     roomID?: string
 }
@@ -31,12 +31,12 @@ const SocketContext = createContext<Context>({
 
 const SocketsProvider = (props: any) => {
     const [username, setUsername] = useState<string>("");
-    const [messages, setMessages] = useState<{username: string, text: string, timestamp: string}[]>([]);
+    const [messages, setMessages] = useState<{type: string, username: string, body: string, timestamp: string}[]>([]);
     const [roomID, setRoomID] = useState<string>("");
 
     useEffect(() => {
-        socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text, timestamp}) => {
-            setMessages([...messages, {username, text, timestamp}]);
+        socket.on(EVENTS.SERVER.SEND_MESSAGE, ({type, username, body, timestamp}) => {
+            setMessages([...messages, {type, username, body, timestamp}]);
         });
     }, [socket]);
 
@@ -44,8 +44,8 @@ const SocketsProvider = (props: any) => {
         setMessages([]);
     }, [roomID]);
 
-    socket.on(EVENTS.SERVER.SEND_MESSAGE, ({username, text, timestamp}) => {
-        setMessages([...messages, {username, text, timestamp}]);
+    socket.on(EVENTS.SERVER.SEND_MESSAGE, ({type, username, body, timestamp}) => {
+        setMessages([...messages, {type, username, body, timestamp}]);
     });
 
     socket.on(EVENTS.SERVER.JOIN_ROOM, ({roomID}) => {

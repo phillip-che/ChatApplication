@@ -1,6 +1,6 @@
 import "../styles/MessageInput.css"
 import { Button, TextField } from '@mui/material';
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSocket } from "@/context/socket.context"
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -10,34 +10,48 @@ const MessageInput = () => {
 
     const { socket, username, messages, setMessages, roomID } = useSocket();
     const [ textInput, setTextInput ] = useState("");
-  
+    const fileRef = useRef(null);
+
     const handleChange = (e: any) => {
         setTextInput(e.target.value);
     };
     
     const handleKeyPress = (e: any) => {
-    if (e.key === "Enter") { 
-        handleSendClick();
-    }
+        if (e.key === "Enter") { 
+            handleSendClick();
+        }
+    };
+
+    const handleFile = (e: any) => {
+        fileRef.current = e.target.files[0];
+        const timestamp = getTime();
+        setMessages([...messages, {type: "file", username: username, body: fileRef.current, timestamp: timestamp}]);
+        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "file", roomID: roomID, username: username, body: fileRef.current, timestamp: timestamp});    
     };
 
     const handleSendClick = () => {
         if (textInput.length < 1) {
             return;
         }
-        const date = new Date();
-        const timestamp = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-  
-        setMessages([...messages, {username: username, text: textInput, timestamp: timestamp}]);
-        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {roomID: roomID, username: username, text: textInput, timestamp: timestamp});
+
+        const timestamp = getTime();
+        setMessages([...messages, {type: "text", username: username, body: textInput, timestamp: timestamp}]);
+        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "text", roomID: roomID, username: username, body: textInput, timestamp: timestamp});    
+
         setTextInput("");
+        fileRef.current = null;
     };
+
+    const getTime = () => {
+        const date = new Date();
+        return date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    }
 
     return (
         <div className="message-input">
             <div className="file-upload">
                 <label 
-                    // onChange={handleFile} 
+                    onChange={handleFile} 
                     htmlFor="formId"
                 >
                     <input name="" type="file" id="formId" hidden />

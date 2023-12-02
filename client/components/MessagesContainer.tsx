@@ -26,9 +26,10 @@ const MessagesContainer = () => {
     <div className="messages-container">
         {messages?.map((message, i) => (
             <Message 
-                key={i} 
+                key={i}
+                type={message.type}
                 author={message.username} 
-                text={message.text} 
+                body={message.body} 
                 timestamp={message.timestamp} 
             />
         ))}

@@ -15,22 +15,23 @@ const io = new Server(httpServer, {
     origin: corsOrigin,
     credentials: true,
   },
+  maxHttpBufferSize: 1e8
 });
 
 const EVENTS = {
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
   CLIENT: {
-    SEND_MESSAGE: 'c_send_message',
-    JOIN_ROOM: 'c_join_room',
-    LEAVE_ROOM: 'c_leave_room',
-    CREATE_ROOM: 'c_create_room'
+      SEND_MESSAGE: 'c_send_message',
+      JOIN_ROOM: 'c_join_room',
+      LEAVE_ROOM: 'c_leave_room',
+      CREATE_ROOM: 'c_create_room'
   },
   SERVER: {
-    SEND_MESSAGE: 's_send_message',
-    JOIN_ROOM: 's_join_room',
-    LEAVE_ROOM: 's_leave_room',
-    CREATE_ROOM: 'c_create_room'
+      SEND_MESSAGE: 's_send_message',
+      JOIN_ROOM: 's_join_room',
+      LEAVE_ROOM: 's_leave_room',
+      CREATE_ROOM: 's_create_room'
   }
 };
 
@@ -50,11 +51,12 @@ httpServer.listen(port, () => {
     });
 
     socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
-      console.log(`${data.username} sent ${data.text} to ${data.roomID}`);
+      console.log(`${data.username} sent a ${data.type} to room: ${data.roomID}`);
       socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, 
         {
+          type: data.type,
           username: data.username,
-          text: data.text,
+          body: data.body,
           timestamp: data.timestamp
       });
     });
@@ -70,13 +72,14 @@ httpServer.listen(port, () => {
     socket.on(EVENTS.CLIENT.JOIN_ROOM, async (data) => {
       console.log(`${data.username} joined ${data.roomID}`);
       socket.data.username = data.username;
+      socket.join(data.roomID);
       const sockets = await io.in(data.roomID).fetchSockets();
       
+      console.log(`Connected Users in ${data.roomID}: ${sockets.length}`);
       sockets.forEach((socket, i) => {
-        console.log(`socket ${i}: ${socket.data.username}`);
+        console.log(`user #${i+1}: ${socket.data.username}`);
       });
-
-      socket.join(data.roomID);
+      
       socket.emit(EVENTS.SERVER.JOIN_ROOM, data);
     });
 

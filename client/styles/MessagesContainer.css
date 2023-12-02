@@ -1,9 +1,10 @@
 .messages-container {
     display: flex;
     flex-direction: column;
-    border: 1px black solid;
+    border: 1px #797272 solid;
     height: 500px;
     overflow: auto;
     margin-top: 1rem;
     overflow-x: hidden;
+    border-radius: 5px;
 }

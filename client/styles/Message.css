@@ -1,8 +1,6 @@
 .message { 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    text-overflow: ellipsis;
     margin-top: 10px;
 }
 
@@ -17,6 +15,7 @@
     font-size: 14px;
     padding: 8px;
     border-radius: 5px;
+    /* text-align: center; */
 }
 
 .timestamp {
@@ -26,7 +25,13 @@
 
 #you {
     align-items: flex-end;
-    margin-right: 5px;
+    margin-right: 10px;
+    margin-left: 100px;
+}
+
+#you .user, #you .timestamp {
+    display: flex;
+    justify-content: right;
 }
   
 #you .text {
@@ -37,7 +42,13 @@
 
 #other {
     align-items: flex-start;
-    margin-left: 5px;
+    margin-left: 10px;
+    margin-right: 100px;
+}
+
+#other .user, #other .timestamp {
+    display: flex;
+    justify-content: left;
 }
 
 #other .text {

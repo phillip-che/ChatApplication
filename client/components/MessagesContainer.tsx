@@ -19,7 +19,7 @@ const MessagesContainer = () => {
                 block: 'end',
                 inline: 'nearest'
               })
-          }
+          };
     }, [messages]);
 
     return (

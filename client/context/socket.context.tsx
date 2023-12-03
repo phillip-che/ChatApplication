@@ -25,6 +25,7 @@ const socket = io(SOCKET_URL, {
   reconnection: true,
   upgrade: true,
   transports: ['websocket', 'polling'],
+  secure: true,
 });
 
 const SocketContext = createContext<Context>({

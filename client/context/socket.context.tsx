@@ -19,13 +19,12 @@ interface Context {
 }
 
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'https://54.153.32.172:4000';
+  process.env.NEXT_PUBLIC_SOCKET_URL || 'https://cypherchat.lol:4000';
 
 const socket = io(SOCKET_URL, {
   reconnection: true,
   upgrade: true,
   transports: ['websocket', 'polling'],
-  secure: true,
 });
 
 const SocketContext = createContext<Context>({

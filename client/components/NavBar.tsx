@@ -12,7 +12,7 @@ import { useSocket } from "@/context/socket.context"
 
 
 const NavBar = () => {
-  const { socket, username, setUsername, roomID } = useSocket();
+  const { socket, roomID } = useSocket();
 
   const handleLeaveChatClick = () => {
     socket.emit(EVENTS.CLIENT.LEAVE_ROOM, {roomID});

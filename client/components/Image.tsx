@@ -2,7 +2,7 @@ import "../styles/Image.css"
 
 import { useEffect, useState } from 'react';
 
-const Image = ({ src } : {src: any, type: string}) => {
+const Image = ({ src } : {src: any }) => {
 
     const [ image, setImage ] = useState<any>("");
 

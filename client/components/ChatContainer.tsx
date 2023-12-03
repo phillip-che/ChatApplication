@@ -1,10 +1,10 @@
 'use client';
 
 import "../styles/ChatContainer.css"
-import { useSocket } from "@/context/socket.context"
-import { useEffect } from 'react'
 import MessagesContainer from './MessagesContainer';
 import MessageInput from "./MessageInput";
+import { useSocket } from "@/context/socket.context"
+import { useEffect } from 'react'
 
 const ChatContainer = () => {
 

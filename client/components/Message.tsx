@@ -1,8 +1,8 @@
 "use client"
 
 import "../styles/Message.css"
-import { useSocket } from "@/context/socket.context"
 import Image from '@/components/Image';
+import { useSocket } from "@/context/socket.context"
 
 const Message = ({type, author, body, timestamp} : {type: string, author: string, body: string, timestamp: string}) => {
 
@@ -20,7 +20,7 @@ const Message = ({type, author, body, timestamp} : {type: string, author: string
         ): (
           <>
             <p className="user">{author}</p>
-            <Image src={body} type={type} />
+            <Image src={body} />
             <p className="timestamp">{timestamp}</p> 
           </>
         )}

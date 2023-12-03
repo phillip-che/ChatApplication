@@ -23,6 +23,9 @@ const MessageInput = () => {
     };
 
     const handleFile = (e: any) => {
+        if(!e.target.files[0].type.includes("image/")) {
+            return;
+        }
         fileRef.current = e.target.files[0];
         const timestamp = getTime();
         if(fileRef.current) {

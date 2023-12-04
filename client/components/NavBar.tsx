@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import EVENTS from '@/config/events';
+import Image from 'next/image';
+import Logo from '../assets/images/logo.jpg'
 import { useSocket } from "@/context/socket.context"
 
 
@@ -30,6 +32,7 @@ const NavBar = () => {
             sx={{ mr: 0 }}
           >
           </IconButton>
+          <Image src={Logo} alt="" width={64} height={40} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             CypherChat
           </Typography>

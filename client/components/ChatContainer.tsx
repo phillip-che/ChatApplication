@@ -12,7 +12,7 @@ const ChatContainer = () => {
   const { setUsername, messages, setMessages } = useSocket();
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username"));
+    setUsername(sessionStorage.getItem("username"));
     setMessages([...messages]);
   }, []);
 

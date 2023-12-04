@@ -12,7 +12,7 @@ import { useSocket } from "@/context/socket.context"
 
 
 const NavBar = () => {
-  const { socket, username, setUsername, roomID } = useSocket();
+  const { socket, roomID } = useSocket();
 
   const handleLeaveChatClick = () => {
     socket.emit(EVENTS.CLIENT.LEAVE_ROOM, {roomID});
@@ -32,9 +32,6 @@ const NavBar = () => {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             CypherChat
-          </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {roomID ? <div>RoomID: {roomID} </div> : null}
           </Typography>
           {roomID ?
             <Button color='inherit' onClick={handleLeaveChatClick}>

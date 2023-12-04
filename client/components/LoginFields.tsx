@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useSocket } from '@/context/socket.context';
 import EVENTS from '@/config/events';
-import { toast, ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from 'react';
+import { useSocket } from '@/context/socket.context';
 
 const LoginFields = () => {
     
@@ -24,41 +22,15 @@ const LoginFields = () => {
   };
 
   const handleJoinRoomClick = () => {
-    if(usernameInput.length > 32) {
-      toast.error('Username cannot be more than 32 characters', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-        return;
-    }
     setUsername(usernameInput);
     localStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: usernameInput, socketID: socket.id});
   };
 
   const handleCreateRoomClick = () => {
-    if(usernameInput.length > 32) {
-      toast.error('Username cannot be more than 32 characters', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-        return;
-    };
     setUsername(usernameInput);
     localStorage.setItem("username", usernameInput);
-    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username});
+    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username: username});
   };
 
   useEffect(() => {
@@ -100,6 +72,7 @@ const LoginFields = () => {
             label="Username"
             variant="outlined"
             value={usernameInput}
+            inputProps={{ maxLength: 16 }}
           />
         </div>
       </Box>
@@ -137,6 +110,7 @@ const LoginFields = () => {
           label="Room ID"
           variant="outlined"
           value={roomIDInput}
+          inputProps={{ maxLength: 10 }}
         />
         
         <Button 
@@ -178,7 +152,6 @@ const LoginFields = () => {
         </Button>
       </div>  
     </Box>
-    <ToastContainer />
   </div>
   );
 };

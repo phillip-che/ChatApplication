@@ -9,7 +9,7 @@
 }
 
 main {
-  margin: 0 auto;
+  margin: 100px auto;
   width: 25%;
   display: flex;
   justify-content: center;

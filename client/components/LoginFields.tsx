@@ -23,19 +23,19 @@ const LoginFields = () => {
 
   const handleJoinRoomClick = () => {
     setUsername(usernameInput);
-    localStorage.setItem("username", usernameInput);
+    sessionStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: usernameInput, socketID: socket.id});
   };
 
   const handleCreateRoomClick = () => {
     setUsername(usernameInput);
-    localStorage.setItem("username", usernameInput);
+    sessionStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username: username});
   };
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username") || "");
-    setUsernameInput(localStorage.getItem("username") || "");
+    setUsername(sessionStorage.getItem("username") || "");
+    setUsernameInput(sessionStorage.getItem("username") || "");
     setRoomIDInput(roomID || "");
   }, []);
 

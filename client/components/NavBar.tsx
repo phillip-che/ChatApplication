@@ -33,9 +33,6 @@ const NavBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             CypherChat
           </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {roomID ? <div>RoomID: {roomID} </div> : null}
-          </Typography>
           {roomID ?
             <Button color='inherit' onClick={handleLeaveChatClick}>
               Leave Chat

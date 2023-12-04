@@ -30,7 +30,7 @@ const LoginFields = () => {
   const handleCreateRoomClick = () => {
     setUsername(usernameInput);
     localStorage.setItem("username", usernameInput);
-    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username});
+    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username: username});
   };
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const LoginFields = () => {
             label="Username"
             variant="outlined"
             value={usernameInput}
-            inputProps={{ maxLength: 24 }}
+            inputProps={{ maxLength: 16 }}
           />
         </div>
       </Box>
@@ -110,6 +110,7 @@ const LoginFields = () => {
           label="Room ID"
           variant="outlined"
           value={roomIDInput}
+          inputProps={{ maxLength: 10 }}
         />
         
         <Button 

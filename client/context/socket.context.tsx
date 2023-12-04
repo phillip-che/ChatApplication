@@ -16,10 +16,12 @@ interface Context {
   }[];
   setMessages: Function;
   roomID?: string;
+  usersConnected: [];
+  setUsersConnected: Function;
 }
 
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'https://cypherchat.lol:4000';
+  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000';
 
 const socket = io(SOCKET_URL, {
   reconnection: true,
@@ -29,9 +31,11 @@ const socket = io(SOCKET_URL, {
 
 const SocketContext = createContext<Context>({
   socket,
+  messages: [],
+  usersConnected: [],
   setUsername: () => false,
   setMessages: () => false,
-  messages: [],
+  setUsersConnected: () => false
 });
 
 const SocketsProvider = (props: any) => {
@@ -40,6 +44,7 @@ const SocketsProvider = (props: any) => {
     { type: string; username: string; body: string; timestamp: string }[]
   >([]);
   const [roomID, setRoomID] = useState<string>('');
+  const [ usersConnected, setUsersConnected ] = useState<any>([]);
 
   useEffect(() => {
     socket.on(
@@ -53,6 +58,10 @@ const SocketsProvider = (props: any) => {
   useEffect(() => {
     setMessages([]);
   }, [roomID]);
+
+  socket.on(EVENTS.UPDATE_USERS, ({ usersConnected }) => {
+    setUsersConnected(usersConnected);
+  });
 
   socket.on(
     EVENTS.SERVER.SEND_MESSAGE,
@@ -72,7 +81,7 @@ const SocketsProvider = (props: any) => {
 
   return (
     <SocketContext.Provider
-      value={{ socket, username, setUsername, messages, setMessages, roomID }}
+      value={{ socket, username, setUsername, messages, setMessages, roomID, usersConnected, setUsersConnected }}
       {...props}
     />
   );

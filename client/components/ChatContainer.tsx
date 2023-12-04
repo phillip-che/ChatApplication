@@ -3,6 +3,7 @@
 import "../styles/ChatContainer.css"
 import MessagesContainer from './MessagesContainer';
 import MessageInput from "./MessageInput";
+import ChatRoomInfo from "./ChatRoomInfo";
 import { useSocket } from "@/context/socket.context"
 import { useEffect } from 'react'
 
@@ -17,8 +18,11 @@ const ChatContainer = () => {
 
   return (
     <div className="chat-container">
-      <MessagesContainer />
-      <MessageInput />
+      <ChatRoomInfo />
+      <div>
+        <MessagesContainer />
+        <MessageInput />
+      </div>
     </div>
   );
 };

@@ -21,6 +21,7 @@ const io = new Server(httpServer, {
 const EVENTS = {
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
+  UPDATE_USERS: 'update-users-connected',
   CLIENT: {
       SEND_MESSAGE: 'c_send_message',
       JOIN_ROOM: 'c_join_room',
@@ -31,7 +32,7 @@ const EVENTS = {
       SEND_MESSAGE: 's_send_message',
       JOIN_ROOM: 's_join_room',
       LEAVE_ROOM: 's_leave_room',
-      CREATE_ROOM: 's_create_room'
+      CREATE_ROOM: 's_create_room',
   }
 };
 
@@ -45,7 +46,16 @@ httpServer.listen(port, () => {
   io.on(EVENTS.CONNECTION, (socket: Socket) => {
     console.log(`User ${socket.id} connected.`);
 
-    socket.on(EVENTS.DISCONNECT, () => {
+    socket.on(EVENTS.DISCONNECT, async () => {
+      if (socket.data.room) {
+        socket.leave(socket.data.room);
+        const sockets = await io.in(socket.data.room).fetchSockets();
+        const usersConnected = [];
+        sockets.forEach((socket) => {
+          usersConnected.push(socket.data.username);
+        });
+        io.in(socket.data.room).emit(EVENTS.UPDATE_USERS, {usersConnected: usersConnected});
+      }
       console.log(`User ${socket.id} disconnected.`);
     });
 
@@ -60,31 +70,51 @@ httpServer.listen(port, () => {
       });
     });
 
-    socket.on(EVENTS.CLIENT.CREATE_ROOM, (data) => {
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, async (data) => {
       socket.data.username = data.username;
       const roomID = nanoid(10);
-      console.log(`Created room: ${roomID}`);
+      socket.data.room = roomID;
+      console.log(`${data.username} created room: ${roomID}`);
       socket.join(roomID);
-      socket.emit(EVENTS.SERVER.JOIN_ROOM, {roomID});
+
+      const sockets = await io.in(roomID).fetchSockets();
+      const usersConnected = [];
+      sockets.forEach((socket) => {
+        usersConnected.push(socket.data.username);
+      });
+
+      io.in(roomID).emit(EVENTS.UPDATE_USERS, {usersConnected: usersConnected});
+      
+      socket.emit(EVENTS.SERVER.JOIN_ROOM, {roomID: roomID, usersConnected: usersConnected});
     });
 
     socket.on(EVENTS.CLIENT.JOIN_ROOM, async (data) => {
       console.log(`${data.username} joined ${data.roomID}`);
       socket.data.username = data.username;
       socket.join(data.roomID);
+      socket.data.room = data.roomID;
       const sockets = await io.in(data.roomID).fetchSockets();
-      
-      console.log(`Connected Users in ${data.roomID}: ${sockets.length}`);
-      sockets.forEach((socket, i) => {
-        console.log(`user #${i+1}: ${socket.data.username}`);
+      const usersConnected = [];
+      sockets.forEach((socket) => {
+        usersConnected.push(socket.data.username);
       });
+
+      io.in(data.roomID).emit(EVENTS.UPDATE_USERS, {usersConnected: usersConnected});
       
-      socket.emit(EVENTS.SERVER.JOIN_ROOM, data);
+      socket.emit(EVENTS.SERVER.JOIN_ROOM, {roomID: data.roomID, usersConnected: usersConnected});
     });
 
-    socket.on(EVENTS.CLIENT.LEAVE_ROOM, (data) => {
+    socket.on(EVENTS.CLIENT.LEAVE_ROOM, async (data) => {
       console.log(`User ${socket.id} left room ${data.roomID}`);
       socket.leave(data.roomID);
+
+      const sockets = await io.in(data.roomID).fetchSockets();
+      const usersConnected = [];
+      sockets.forEach((socket) => {
+        usersConnected.push(socket.data.username);
+      });
+
+      io.in(data.roomID).emit(EVENTS.UPDATE_USERS, {usersConnected: usersConnected});
       socket.emit(EVENTS.SERVER.LEAVE_ROOM, data);
     });
   });

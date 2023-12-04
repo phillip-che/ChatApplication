@@ -1,7 +1,14 @@
 import './globals.css'
+
 import NavBar from '@/components/NavBar'
-import { Roboto } from 'next/font/google'
 import SocketsProvider from '@/context/socket.context'
+import { Roboto } from 'next/font/google'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "CypherChat",
+  description: "Chat privately with anyone with full anonymity"
+}
 
 const roboto = Roboto({
   weight: ['400', '700'],

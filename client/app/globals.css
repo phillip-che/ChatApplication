@@ -37,3 +37,9 @@ a {
     color-scheme: light;
   }
 }
+
+@media only screen and (max-width: 1000px) {
+  .main {
+    margin: 0 auto;
+  }
+}

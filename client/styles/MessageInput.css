@@ -2,7 +2,6 @@
     display: flex;
     width: 750px;
     margin-top: 10px;
-
 }
 
 .send-message-button {
@@ -23,4 +22,10 @@
 
 .file-upload label:hover {
     opacity: 0.5;
+}
+
+@media only screen and (max-width: 1000px) {
+    .message-input {
+        width: auto;
+    }
 }

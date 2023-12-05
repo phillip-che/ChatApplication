@@ -7,3 +7,10 @@ h2 {
     box-shadow: 0 1px 1px 0 #3E3E3D, 0 6px 20px 0 #3E3E3D;
     border-radius: 10px;
 }
+
+@media only screen and (max-width: 1000px) {
+    .home-container {
+        padding: 0rem;
+        box-shadow: none;
+    }
+}

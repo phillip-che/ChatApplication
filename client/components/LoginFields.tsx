@@ -1,5 +1,6 @@
 'use client';
 
+import "../styles/LoginFields.css"
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -23,24 +24,24 @@ const LoginFields = () => {
 
   const handleJoinRoomClick = () => {
     setUsername(usernameInput);
-    localStorage.setItem("username", usernameInput);
+    sessionStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, {roomID: roomIDInput, username: usernameInput, socketID: socket.id});
   };
 
   const handleCreateRoomClick = () => {
     setUsername(usernameInput);
-    localStorage.setItem("username", usernameInput);
+    sessionStorage.setItem("username", usernameInput);
     socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username: username});
   };
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username") || "");
-    setUsernameInput(localStorage.getItem("username") || "");
+    setUsername(sessionStorage.getItem("username") || "");
+    setUsernameInput(sessionStorage.getItem("username") || "");
     setRoomIDInput(roomID || "");
   }, []);
 
   return (
-    <div>
+    <div className="login-fields">
       <Box
         component="form"
         sx={{
@@ -84,8 +85,7 @@ const LoginFields = () => {
       noValidate
       autoComplete="off"
       >
-      <div className="room-container">
-
+      <div className="room-input">
         <TextField
           sx={{ 
             input: { color: "#F7F7F8" }, 
@@ -112,7 +112,8 @@ const LoginFields = () => {
           value={roomIDInput}
           inputProps={{ maxLength: 10 }}
         />
-        
+      </div>  
+      <div>
         <Button 
         sx={{
           "&.Mui-disabled": {
@@ -122,7 +123,7 @@ const LoginFields = () => {
         }}
         style={{
           backgroundColor: "#797272",
-          width: "200px"
+          width: "225px"
         }}
         variant="contained"
         disabled={(!usernameInput || !roomIDInput)}
@@ -131,7 +132,7 @@ const LoginFields = () => {
           Join Room
         </Button>
 
-        <p>OR</p>
+        <h3>OR</h3>
 
         <Button 
         sx={{
@@ -142,7 +143,7 @@ const LoginFields = () => {
         }}
         style={{
           backgroundColor: "#797272",
-          width: "200px"
+          width: "225px"
         }}
         variant="contained" 
         disabled={!usernameInput}
@@ -150,7 +151,7 @@ const LoginFields = () => {
         >
           Create Room
         </Button>
-      </div>  
+        </div>
     </Box>
   </div>
   );

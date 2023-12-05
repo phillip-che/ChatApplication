@@ -1,5 +1,6 @@
 import "../styles/ChatRoomInfo.css"
 
+import LeaveChatButton from "./LeaveChatButton";
 import { useSocket } from "@/context/socket.context"
 
 const ChatRoomInfo = () => {
@@ -20,6 +21,7 @@ const ChatRoomInfo = () => {
             <div className="user-list">
                 {usersConnected?.map((user) => (<p className="user-connected">• {user}</p>))}
             </div>
+            <LeaveChatButton />
         </div>
     );
 }

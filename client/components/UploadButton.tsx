@@ -31,6 +31,7 @@ const UploadButton = () => {
         if(fileRef.current) {
             setMessages([...messages, {type: "file", username: username, body: fileRef.current, timestamp: timestamp}]);
             socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "file", roomID: roomID, username: username, body: fileRef.current, timestamp: timestamp});    
+            fileRef.current = null;
         }
     };
 
@@ -38,6 +39,7 @@ const UploadButton = () => {
         <div className="file-upload">
         <label 
             onChange={handleFile} 
+            onClick={(e : any) => e.target.value = null}
             htmlFor="formId"
         >
             <input name="" type="file" id="formId" hidden />

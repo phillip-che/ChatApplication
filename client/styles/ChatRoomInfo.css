@@ -52,3 +52,22 @@
         opacity: 0.6;
     }
 }
+
+@media only screen and (max-width: 1000px) {
+    .chat-room-info {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 350px;
+        gap: 5px;
+    }
+    .user-list {
+        text-align: center;
+        margin-top: 5px;
+        margin-bottom: 30px;
+    }
+    .user-count {
+        justify-content: center;
+    }
+}

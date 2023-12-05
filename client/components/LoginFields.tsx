@@ -31,7 +31,7 @@ const LoginFields = () => {
   const handleCreateRoomClick = () => {
     setUsername(usernameInput);
     sessionStorage.setItem("username", usernameInput);
-    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username: username});
+    socket.emit(EVENTS.CLIENT.CREATE_ROOM, {username: usernameInput});
   };
 
   useEffect(() => {

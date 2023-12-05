@@ -36,14 +36,14 @@
       transform: translateY(-8px);
     }
   }
-  .bob-on-hover {
+.bob-on-hover {
     display: inline-block;
     vertical-align: middle;
     -webkit-transform: perspective(1px) translateZ(0);
     transform: perspective(1px) translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  }
-  .bob-on-hover:hover, .bob-on-hover:focus, .bob-on-hover:active {
+}
+.bob-on-hover:hover, .bob-on-hover:focus, .bob-on-hover:active {
     -webkit-animation-name: bob-on-hover-float, bob-on-hover;
     animation-name: bob-on-hover-float, bob-on-hover;
     -webkit-animation-duration: .3s, 1.5s;
@@ -58,4 +58,12 @@
     animation-fill-mode: forwards;
     -webkit-animation-direction: normal, alternate;
     animation-direction: normal, alternate;
-  }
+}
+
+@media only screen and (max-width: 1000px) {
+    .leave-room-button {
+        display: flex;
+        margin-left: 0px;
+        align-self: center;
+    }
+}

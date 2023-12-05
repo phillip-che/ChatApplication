@@ -8,3 +8,9 @@
     overflow-x: hidden;
     border-radius: 5px;
 }
+
+@media only screen and (max-width: 1000px) {
+    .messages-container {
+        width: 350px;
+    }
+}

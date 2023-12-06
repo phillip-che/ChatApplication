@@ -1,5 +1,11 @@
 .image-container {
-    width: auto;
-    height: 250px;
+    max-width: 700px;
+    max-height: 250px;
     border-radius: 5px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .image-container {
+        max-width: 250px;
+    }
 }

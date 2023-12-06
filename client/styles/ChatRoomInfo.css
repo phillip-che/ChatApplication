@@ -7,8 +7,6 @@
     margin-right: 1rem;
     padding: 1rem;
     gap: 10px;
-    overflow: auto;
-    overflow-x: hidden;
     position: relative;
 }
 
@@ -29,6 +27,9 @@
 
 .user-list {
     margin-top: 25px;
+    overflow: auto;
+    overflow-x: hidden;
+    height: 325px;
 }
 
 .user-count {

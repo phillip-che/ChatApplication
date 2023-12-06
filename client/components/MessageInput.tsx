@@ -61,6 +61,7 @@ const MessageInput = () => {
                 type="text"
                 placeholder="Message"
                 fullWidth
+                inputProps={{ maxLength: 2048 }}
             />
             <Button
                 className="send-message-button"

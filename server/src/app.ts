@@ -66,7 +66,9 @@ httpServer.listen(port, () => {
           type: data.type,
           username: data.username,
           body: data.body,
-          timestamp: data.timestamp
+          timestamp: data.timestamp,
+          iv: data.iv,
+          aesKey: data.aesKey
       });
     });
 

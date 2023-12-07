@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
 import EVENTS from '@/config/events';
+import crypto from 'crypto'
 
 interface Context {
   socket: Socket;
@@ -11,17 +12,17 @@ interface Context {
   messages: {
     type: string;
     username: string;
-    body: string;
+    body: any;
     timestamp: string;
   }[];
   setMessages: Function;
   roomID?: string;
   usersConnected: [];
-  setUsersConnected: Function;
+  aesKey: Buffer;
 }
 
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'https://cypherchat.lol:4000';
+  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000/';
 
 const socket = io(SOCKET_URL, {
   reconnection: true,
@@ -29,13 +30,15 @@ const socket = io(SOCKET_URL, {
   transports: ['websocket', 'polling'],
 });
 
+const aesKey = crypto.randomBytes(32);
+
 const SocketContext = createContext<Context>({
   socket,
   messages: [],
   usersConnected: [],
+  aesKey,
   setUsername: () => false,
-  setMessages: () => false,
-  setUsersConnected: () => false
+  setMessages: () => false
 });
 
 const SocketsProvider = (props: any) => {
@@ -44,14 +47,21 @@ const SocketsProvider = (props: any) => {
     { type: string; username: string; body: string; timestamp: string }[]
   >([]);
   const [roomID, setRoomID] = useState<string>('');
-  const [ usersConnected, setUsersConnected ] = useState<any>([]);
+  const [usersConnected, setUsersConnected] = useState<any>([]);
 
   useEffect(() => {
     socket.on(
       EVENTS.SERVER.SEND_MESSAGE,
-      ({ type, username, body, timestamp }) => {
-        setMessages([...messages, { type, username, body, timestamp }]);
-      }
+    ({ type, username, body, timestamp, iv, aesKey }) => {
+      console.log(new Uint8Array(aesKey));
+      console.log(new Uint8Array(iv));
+      const decipher = crypto.createDecipheriv('aes-256-cbc', new Uint8Array(aesKey), new Uint8Array(iv));
+      let decryptedMessage: any= decipher.update(body, 'utf8', 'hex');
+      decryptedMessage += decipher.final('hex');
+      console.log(decryptedMessage);
+
+      setMessages([...messages, { type, username, body, timestamp }]);
+    }
     );
   }, [socket]);
 
@@ -59,16 +69,23 @@ const SocketsProvider = (props: any) => {
     setMessages([]);
   }, [roomID]);
 
-  socket.on(EVENTS.UPDATE_USERS, ({ usersConnected }) => {
-    setUsersConnected(usersConnected);
-  });
-
   socket.on(
     EVENTS.SERVER.SEND_MESSAGE,
-    ({ type, username, body, timestamp }) => {
+    ({ type, username, body, timestamp, iv, aesKey }) => {
+      console.log(aesKey.toString('hex'));
+      console.log(iv.toString('hex'));
+      const decipher = crypto.createDecipheriv('aes-256-cbc', new Uint8Array(aesKey), new Uint8Array(iv));
+      let decryptedMessage: any= decipher.update(body, 'utf8', 'hex');
+      decryptedMessage += decipher.final('hex');
+      console.log(decryptedMessage);
+
       setMessages([...messages, { type, username, body, timestamp }]);
     }
   );
+
+  socket.on(EVENTS.UPDATE_USERS, ({ usersConnected }) => {
+    setUsersConnected(usersConnected);
+  });
 
   socket.on(EVENTS.SERVER.JOIN_ROOM, ({ roomID }) => {
     setRoomID(roomID);
@@ -81,7 +98,7 @@ const SocketsProvider = (props: any) => {
 
   return (
     <SocketContext.Provider
-      value={{ socket, username, setUsername, messages, setMessages, roomID, usersConnected, setUsersConnected }}
+      value={{ socket, username, setUsername, messages, setMessages, roomID, usersConnected, aesKey }}
       {...props}
     />
   );

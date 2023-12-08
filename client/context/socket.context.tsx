@@ -22,7 +22,7 @@ interface Context {
 }
 
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000/';
+  process.env.NEXT_PUBLIC_SOCKET_URL || 'https://cypherchat.lol:4000';
 
 const socket = io(SOCKET_URL, {
   reconnection: true,
@@ -30,7 +30,8 @@ const socket = io(SOCKET_URL, {
   transports: ['websocket', 'polling'],
 });
 
-const aesKey = crypto.randomBytes(32);
+const aesKeyString = "fcba69ac69c7182417c68a5f6f78f6a24072156dd444013e69a2820f631164e7";
+const aesKey = Buffer.from(aesKeyString, 'hex');
 
 const SocketContext = createContext<Context>({
   socket,
@@ -52,12 +53,11 @@ const SocketsProvider = (props: any) => {
   useEffect(() => {
     socket.on(
       EVENTS.SERVER.SEND_MESSAGE,
-    ({ type, username, body, timestamp, iv, aesKey }) => {
+    ({ type, username, body, timestamp, iv }) => {
 
-      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(aesKey, 'hex'), Buffer.from(iv, 'hex'));
+      const decipher = crypto.createDecipheriv('aes-256-cbc', aesKey, Buffer.from(iv, 'hex'));
       let decryptedMessage: any= decipher.update(body, 'hex', 'utf-8');
       decryptedMessage += decipher.final('utf-8');
-      console.log("Decrypted Message: " + decryptedMessage);
       body = decryptedMessage;
 
       setMessages([...messages, { type, username, body, timestamp }]);
@@ -71,11 +71,10 @@ const SocketsProvider = (props: any) => {
 
   socket.on(
     EVENTS.SERVER.SEND_MESSAGE,
-    ({ type, username, body, timestamp, iv, aesKey }) => {
-      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(aesKey, 'hex'), Buffer.from(iv, 'hex'));
+    ({ type, username, body, timestamp, iv }) => {
+      const decipher = crypto.createDecipheriv('aes-256-cbc', aesKey, Buffer.from(iv, 'hex'));
       let decryptedMessage: any= decipher.update(body, 'hex', 'utf-8');
       decryptedMessage += decipher.final('utf-8');
-      console.log("Decrypted Message: " + decryptedMessage);
       body = decryptedMessage;
 
       setMessages([...messages, { type, username, body, timestamp }]);

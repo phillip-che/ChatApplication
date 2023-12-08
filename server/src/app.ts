@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { nanoid } from 'nanoid';
+import crypto from 'crypto'
 
 const port = process.env.PORT || 4000;
 const corsOrigin = '*';
@@ -61,12 +62,14 @@ httpServer.listen(port, () => {
 
     socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
       console.log(`${data.username} sent a ${data.type} to room: ${data.roomID}`);
+
       socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, 
         {
           type: data.type,
           username: data.username,
           body: data.body,
-          timestamp: data.timestamp
+          timestamp: data.timestamp,
+          iv: data.iv,
       });
     });
 

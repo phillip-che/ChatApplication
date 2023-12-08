@@ -53,12 +53,12 @@ const SocketsProvider = (props: any) => {
     socket.on(
       EVENTS.SERVER.SEND_MESSAGE,
     ({ type, username, body, timestamp, iv, aesKey }) => {
-      console.log(new Uint8Array(aesKey));
-      console.log(new Uint8Array(iv));
-      const decipher = crypto.createDecipheriv('aes-256-cbc', new Uint8Array(aesKey), new Uint8Array(iv));
-      let decryptedMessage: any= decipher.update(body, 'utf8', 'hex');
-      decryptedMessage += decipher.final('hex');
-      console.log(decryptedMessage);
+
+      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(aesKey, 'hex'), Buffer.from(iv, 'hex'));
+      let decryptedMessage: any= decipher.update(body, 'hex', 'utf-8');
+      decryptedMessage += decipher.final('utf-8');
+      console.log("Decrypted Message: " + decryptedMessage);
+      body = decryptedMessage;
 
       setMessages([...messages, { type, username, body, timestamp }]);
     }
@@ -72,12 +72,11 @@ const SocketsProvider = (props: any) => {
   socket.on(
     EVENTS.SERVER.SEND_MESSAGE,
     ({ type, username, body, timestamp, iv, aesKey }) => {
-      console.log(aesKey.toString('hex'));
-      console.log(iv.toString('hex'));
-      const decipher = crypto.createDecipheriv('aes-256-cbc', new Uint8Array(aesKey), new Uint8Array(iv));
-      let decryptedMessage: any= decipher.update(body, 'utf8', 'hex');
-      decryptedMessage += decipher.final('hex');
-      console.log(decryptedMessage);
+      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(aesKey, 'hex'), Buffer.from(iv, 'hex'));
+      let decryptedMessage: any= decipher.update(body, 'hex', 'utf-8');
+      decryptedMessage += decipher.final('utf-8');
+      console.log("Decrypted Message: " + decryptedMessage);
+      body = decryptedMessage;
 
       setMessages([...messages, { type, username, body, timestamp }]);
     }

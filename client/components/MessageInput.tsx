@@ -29,11 +29,13 @@ const MessageInput = () => {
 
         const date = new Date();
         const timestamp = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });;
+
         const iv = crypto.randomBytes(16);
-        console.log(iv.toString('hex'));
+        const ivString = iv.toString('hex');
+        const aesString = aesKey.toString('hex');
         const encryptedMessage = encrypt(textInput, iv);
         setMessages([...messages, {type: "text", username: username, body: textInput, timestamp: timestamp}]);
-        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "text", roomID: roomID, username: username, body: encryptedMessage, timestamp: timestamp, iv: iv, aesKey: aesKey});    
+        socket.emit(EVENTS.CLIENT.SEND_MESSAGE, {type: "text", roomID: roomID, username: username, body: encryptedMessage, timestamp: timestamp, aesKey: aesString, iv: ivString});    
 
         setTextInput("");
     };
@@ -41,7 +43,7 @@ const MessageInput = () => {
     const encrypt = (text: string, iv: any) => {
         console.log(aesKey.toString('hex'));
         const cipher = crypto.createCipheriv('aes-256-cbc', aesKey, iv);
-        let encryptedMessage = cipher.update(text, 'utf8', 'hex');
+        let encryptedMessage = cipher.update(text, 'utf-8', 'hex');
         encryptedMessage += cipher.final('hex');
 
         return encryptedMessage;

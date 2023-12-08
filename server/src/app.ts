@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { nanoid } from 'nanoid';
+import crypto from 'crypto'
 
 const port = process.env.PORT || 4000;
 const corsOrigin = '*';
@@ -46,6 +47,8 @@ httpServer.listen(port, () => {
   io.on(EVENTS.CONNECTION, (socket: Socket) => {
     console.log(`User ${socket.id} connected.`);
 
+    // const aesKey = crypto.randomBytes(32);
+
     socket.on(EVENTS.DISCONNECT, async () => {
       if (socket.data.room) {
         socket.leave(socket.data.room);
@@ -61,6 +64,25 @@ httpServer.listen(port, () => {
 
     socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
       console.log(`${data.username} sent a ${data.type} to room: ${data.roomID}`);
+
+      // const iv = crypto.randomBytes(16);
+      // const cipher = crypto.createCipheriv('aes-256-cbc', aesKey, iv);
+      // let encryptedMessage = cipher.update(data.body, 'utf-8', 'hex');
+      // encryptedMessage += cipher.final('hex');
+      // console.log("Encrypted Message: " + encryptedMessage);
+
+      // const decipher = crypto.createDecipheriv('aes-256-cbc', aesKey, iv);
+      // let decryptedMessage: any= decipher.update(encryptedMessage, 'hex', 'utf-8');
+      // decryptedMessage += decipher.final('utf-8');
+      // console.log("Decrypted Message: " + decryptedMessage);
+
+      console.log("iv string: " + data.iv);
+      console.log("aesKey string: " + data.aesKey);
+
+      // const decipher = crypto.createDecipheriv('aes-256-cbc', data.aesKey, data.iv);
+      // let decryptedMessage: any= decipher.update(data.body, 'hex', 'utf-8');
+      // decryptedMessage += decipher.final('utf-8');
+
       socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, 
         {
           type: data.type,

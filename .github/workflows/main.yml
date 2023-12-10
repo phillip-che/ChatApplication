@@ -38,7 +38,7 @@ jobs:
       - name: Generate .env file
         uses: iamsauravsharma/create-dotenv@v2.0.1
         with:
-          file-path: 'client/.env.local'
+          file-path: 'client/.env'
         env:
           NEXT_PUBLIC_SOCKET_URL: ${{ secrets.NEXT_PUBLIC_SOCKET_URL }}
           NEXT_PUBLIC_AES_KEY_STRING: ${{ secrets.NEXT_PUBLIC_AES_KEY_STRING }}

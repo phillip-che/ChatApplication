@@ -10,9 +10,10 @@ import { useSocket } from '@/context/socket.context';
 import { Divider } from '@mui/material';
 
 const LoginFields = () => {
-  const { socket, username, setUsername, roomID } = useSocket();
-  const [usernameInput, setUsernameInput] = useState<string>('');
-  const [roomIDInput, setRoomIDInput] = useState<string>('');
+    
+  const { socket, setUsername, roomID } = useSocket();
+  const [usernameInput, setUsernameInput] = useState<string>("");
+  const [roomIDInput, setRoomIDInput] = useState<string>("");
 
   const handleUsernameChange = (e: any) => {
     setUsernameInput(e.target.value);

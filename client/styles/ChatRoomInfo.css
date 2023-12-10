@@ -1,74 +1,74 @@
 .chat-room-info {
-    margin-top: 1rem;
-    border: 1px #797272 solid;
-    height: 500px;
-    width: 200px;
-    border-radius: 5px;
-    margin-right: 1rem;
-    padding: 1rem;
-    gap: 10px;
-    position: relative;
+  margin-top: 1rem;
+  border: 1px #797272 solid;
+  height: 500px;
+  width: 200px;
+  border-radius: 5px;
+  margin-right: 1rem;
+  padding: 1rem;
+  gap: 10px;
+  position: relative;
 }
 
 .chat-room-header {
-    text-align: center;
-    margin-bottom: 5px;
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 .room-id {
-    text-align: center;
-    border-bottom: 1px solid;
-    margin-bottom: 10px;
+  text-align: center;
+  /* border-bottom: 1px solid; */
+  margin-bottom: 10px;
 }
 
 .user-connected {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .user-list {
-    margin-top: 25px;
-    overflow: auto;
-    overflow-x: hidden;
-    height: 325px;
+  margin-top: 25px;
+  overflow: auto;
+  overflow-x: hidden;
+  height: 325px;
 }
 
 .user-count {
-    display: flex;
+  display: flex;
 }
 
 .blinking-dot {
-    animation: blinker 2s linear infinite;
-    width: 10px;
-    height: 10px;
-    display: inline-block;
-    border: 1px solid rgb(4, 255, 4);
-    background-color: rgb(4, 255, 4);
-    border-radius: 100%;
-    margin-top: 4px;
-    margin-right: 5px;
+  animation: blinker 2s linear infinite;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border: 1px solid rgb(4, 255, 4);
+  background-color: rgb(4, 255, 4);
+  border-radius: 100%;
+  margin-top: 4px;
+  margin-right: 5px;
 }
 
 @keyframes blinker {
-    50% {
-        opacity: 0.6;
-    }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
-    .chat-room-info {
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        width: 350px;
-        gap: 5px;
-    }
-    .user-list {
-        text-align: center;
-        margin-top: 5px;
-        margin-bottom: 30px;
-    }
-    .user-count {
-        justify-content: center;
-    }
+  .chat-room-info {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 350px;
+    gap: 5px;
+  }
+  .user-list {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 30px;
+  }
+  .user-count {
+    justify-content: center;
+  }
 }

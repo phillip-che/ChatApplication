@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import io, { Socket } from 'socket.io-client';
 import EVENTS from '@/config/events';
 import crypto from 'crypto'
@@ -22,7 +22,7 @@ interface Context {
 }
 
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'https://cypherchat.lol:4000';
+  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
 
 const socket = io(SOCKET_URL, {
   reconnection: true,
@@ -30,8 +30,7 @@ const socket = io(SOCKET_URL, {
   transports: ['websocket', 'polling'],
 });
 
-const aesKeyString = "fcba69ac69c7182417c68a5f6f78f6a24072156dd444013e69a2820f631164e7";
-const aesKey = Buffer.from(aesKeyString, 'hex');
+const aesKey = Buffer.from(process.env.NEXT_PUBLIC_AES_KEY_STRING as string, 'hex');
 
 const SocketContext = createContext<Context>({
   socket,

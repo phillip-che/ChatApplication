@@ -62,7 +62,7 @@ httpServer.listen(port, () => {
 
     socket.on(EVENTS.CLIENT.SEND_MESSAGE, (data) => {
       console.log(`${data.username} sent a ${data.type} to room: ${data.roomID}`);
-
+      console.log(`Encrypted Message: ${data.body}`);
       socket.to(data.roomID).emit(EVENTS.SERVER.SEND_MESSAGE, 
         {
           type: data.type,

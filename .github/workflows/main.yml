@@ -35,6 +35,14 @@ jobs:
       - name: Install backend dependencies
         run: cd server && npm install
 
+      - name: Generate .env file
+        uses: iamsauravsharma/create-dotenv@v2.0.1
+        with:
+          file-path: 'client/.env.local'
+        env:
+          NEXT_PUBLIC_SOCKET_URL: ${{ secrets.NEXT_PUBLIC_SOCKET_URL }}
+          NEXT_PUBLIC_AES_KEY_STRING: ${{ secrets.NEXT_PUBLIC_AES_KEY_STRING }}
+
       - name: Remove previous deployment
         uses: appleboy/ssh-action@v1.0.0
         with:

@@ -29,12 +29,6 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
 
-      - name: Install client dependencies and build client deployment
-        run: cd client && npm install && npm run build
-
-      - name: Install backend dependencies
-        run: cd server && npm install
-
       - name: Generate .env file
         uses: iamsauravsharma/create-dotenv@v2.0.1
         with:
@@ -42,6 +36,12 @@ jobs:
         env:
           NEXT_PUBLIC_SOCKET_URL: ${{ secrets.NEXT_PUBLIC_SOCKET_URL }}
           NEXT_PUBLIC_AES_KEY_STRING: ${{ secrets.NEXT_PUBLIC_AES_KEY_STRING }}
+
+      - name: Install client dependencies and build client deployment
+        run: cd client && npm install && npm run build
+
+      - name: Install backend dependencies
+        run: cd server && npm install
 
       - name: Remove previous deployment
         uses: appleboy/ssh-action@v1.0.0

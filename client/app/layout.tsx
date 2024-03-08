@@ -6,7 +6,7 @@ import { Roboto } from 'next/font/google';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'CypherChat',
+  title: 'SecureChatApplication',
   description: 'Chat privately with anyone with full anonymity',
 };
 
